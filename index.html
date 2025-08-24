@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Amaya Luxury Goat Milk Soaps - Handcrafted artisan soaps blending traditional techniques with modern luxury">
+    <title>Amaya | Luxury Goat Milk Soaps</title>
+    
+    <!-- Google Fonts with performance optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Load fonts asynchronously to prevent render blocking -->
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" 
+      rel="stylesheet"
+      media="print" 
+      onload="this.onload=null;this.media='all'"
+    >
+    
+    <!-- Fallback for users without JavaScript -->
+    <noscript>
+      <link 
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" 
+        rel="stylesheet"
+      >
+    </noscript>
+    
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="/src/index.css" as="style">
+    
+    <!-- Inline critical CSS for immediate rendering -->
+    <style>
+      /* Critical CSS for initial load - prevents layout shift */
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #F8FAFC; /* slate-50 fallback */
+        color: #475569; /* slate-600 fallback */
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Loading state styles */
+      .loading-fallback {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #E6F7F9 0%, #F0FFE6 100%);
+      }
+      
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #2AB7CA;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading fallback for slow connections -->
+    <div id="loading-fallback" class="loading-fallback" style="display: none;">
+      <div class="loading-spinner"></div>
+    </div>
+    
+    <div id="root">
+      <!-- React content will be injected here -->
+    </div>
+    
+    <!-- Corrected script reference - using main.tsx instead of main.jsx -->
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Load non-critical CSS after initial render -->
+    <link rel="stylesheet" href="/src/index.css" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="/src/index.css">
+    </noscript>
+    
+    <!-- Script to show loading state if React takes time to load -->
+    <script>
+      // Show loading fallback if React takes more than 200ms to load
+      const loadingFallback = document.getElementById('loading-fallback');
+      const loadingTimer = setTimeout(() => {
+        loadingFallback.style.display = 'flex';
+      }, 200);
+      
+      // Hide loading fallback when React loads
+      window.addEventListener('load', () => {
+        clearTimeout(loadingTimer);
+        loadingFallback.style.display = 'none';
+      });
+      
+      // Fallback in case React fails to load
+      setTimeout(() => {
+        loadingFallback.style.display = 'none';
+      }, 5000);
+    </script>
+  </body>
+</html>

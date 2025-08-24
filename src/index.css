@@ -1,0 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Vibrant Color Palette - Teal, Coral, Lime */
+    --teal-50: #E6F7F9;
+    --teal-100: #B3E8F0;
+    --teal-300: #4ECDC4;
+    --teal-500: #2AB7CA;
+    --teal-600: #1A9CB4;
+    --teal-700: #0D7A8C;
+    
+    --coral-100: #FFE2D9;
+    --coral-300: #FFA08A;
+    --coral-500: #FF6B6B;
+    --coral-600: #F25C54;
+    --coral-700: #D14949;
+    
+    --lime-100: #F0FFE6;
+    --lime-300: #C8F08F;
+    --lime-500: #A3D93B;
+    --lime-600: #8BC34A;
+    --lime-700: #689F38;
+    
+    --slate-50: #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1E293B;
+    --slate-900: #0F172A;
+
+    /* Animation timing */
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-800 font-sans antialiased;
+    font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv03' on;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  [data-js-focus-visible] :focus:not([data-focus-visible-added]) {
+    @apply outline-none ring-0;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-200;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-teal-500 to-teal-600 rounded-full hover:from-teal-600 hover:to-teal-700 transition-all duration-300;
+  }
+
+  /* Selection styling - Fixed the issue here */
+  ::selection {
+    background-color: rgba(42, 183, 202, 0.3); /* teal-500 with 30% opacity */
+    color: theme('colors.slate.900');
+  }
+
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Animation keyframes */
+  @keyframes fadeIn {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from { 
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to { 
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { 
+      transform: translateY(0px) rotate(0deg); 
+    }
+    50% { 
+      transform: translateY(-10px) rotate(2deg); 
+    }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Animation classes */
+  .animate-fade-in {
+    animation: fadeIn 0.6s var(--ease-out-quint) forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.8s var(--ease-out-quint) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.5s var(--ease-out-quint) forwards;
+  }
+
+  .animate-float {
+    animation: float 3s var(--ease-in-out-quint) infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .animate-gradient-shift {
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    background: linear-gradient(to right, theme('colors.teal.600'), theme('colors.coral.600'));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Hover effects */
+  .hover-lift {
+    transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Staggered animation for children */
+  .stagger-children > * {
+    opacity: 0;
+    animation: fadeIn 0.6s var(--ease-out-quint) forwards;
+  }
+
+  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+}
+
+@layer components {
+  /* Enhanced buttons */
+  .btn-primary {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to right, theme('colors.teal.600'), theme('colors.teal.500'));
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(to right, theme('colors.teal.700'), theme('colors.teal.600'));
+    transform: translateY(-2px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  .btn-primary:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: theme('colors.teal.500');
+    ring-offset: 2px;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-primary:hover::before {
+    opacity: 1;
+  }
+
+  .btn-secondary {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to right, theme('colors.coral.600'), theme('colors.coral.500'));
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .btn-secondary:hover {
+    background: linear-gradient(to right, theme('colors.coral.700'), theme('colors.coral.600'));
+    transform: translateY(-2px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  .btn-outline {
+    position: relative;
+    border: 2px solid theme('colors.teal.600');
+    color: theme('colors.teal.600');
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover {
+    background: theme('colors.teal.600');
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Enhanced card component */
+  .card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s;
+    border: 1px solid theme('colors.slate.100');
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Enhanced input fields */
+  .input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid theme('colors.slate.200');
+    border-radius: 0.75rem;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  .input-field:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: theme('colors.teal.500');
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(42, 183, 202, 0.1);
+  }
+
+  /* Loading spinner with gradient */
+  .spinner {
+    animation: spin 1s linear infinite;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-right-color: currentColor;
+    background: conic-gradient(from 0deg, transparent, theme('colors.teal.500'));
+  }
+
+  /* Navigation link styles */
+  .nav-link {
+    position: relative;
+    font-weight: 500;
+    color: theme('colors.slate.700');
+    transition: color 0.3s;
+  }
+
+  .nav-link:hover {
+    color: theme('colors.teal.600');
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: theme('colors.teal.600');
+    transition: width 0.3s;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+}

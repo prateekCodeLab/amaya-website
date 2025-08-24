@@ -77,28 +77,36 @@ amaya-website/ ├── public/ │ └── vite.svg ├── src/ │ ├�
    npm run dev
    ```
 
-Available Scripts
+## Available Scripts
 npm run dev — Start the Vite development server with HMR
 npm run build — Build the app for production (outputs to dist/)
 npm run preview — Preview the production build locally
 npm run lint — Run ESLint on all source files
 npm run type-check — Run TypeScript type checking
-Customization
-Branding & Content:
+
+## Customization
+
+- ### Branding & Content:
 Update product data, articles, and company info in constants.ts and page components in src/pages/.
-Styling:
+
+- ### Styling:
 Tailwind CSS is configured in tailwind.config.js and index.css.
 You can easily adjust the color palette, fonts, and animations.
-Images:
+
+- ### Images:
 Product and article images use Unsplash URLs and SVG placeholders for performance and fallback.
 See constants.ts and imageUtils.ts.
-Accessibility & Performance
-Uses semantic HTML, focus management, and ARIA attributes.
-Supports reduced motion for users with accessibility needs.
-Fonts and CSS are preloaded for faster rendering.
-Images are lazy-loaded and optimized for different screen sizes.
-Error boundaries prevent the app from crashing on runtime errors.
-License
+
+## Accessibility & Performance
+
+- Uses semantic HTML, focus management, and ARIA attributes.
+- Supports reduced motion for users with accessibility needs.
+- Fonts and CSS are preloaded for faster rendering.
+- Images are lazy-loaded and optimized for different screen sizes.
+- Error boundaries prevent the app from crashing on runtime errors.
+
+## License
+
 This project is for demonstration and educational purposes.
 For commercial use, please replace all demo content and review third-party licenses.
 

@@ -362,3 +362,46 @@
     width: 100%;
   }
 }
+
+/* Add to existing index.css */
+@layer utilities {
+  /* Scroll-triggered animations */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  .animate-on-scroll.animated {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Standardized buttons */
+  .btn-standard {
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply btn-standard bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-500;
+  }
+  
+  .btn-secondary {
+    @apply btn-standard bg-white text-teal-600 border-2 border-teal-600 hover:bg-teal-600 hover:text-white focus:ring-teal-500;
+  }
+}
+
+/* Mobile responsiveness improvements */
+@media (max-width: 768px) {
+  .mobile-stack {
+    flex-direction: column;
+  }
+  
+  .mobile-center {
+    text-align: center;
+  }
+  
+  .mobile-padding {
+    padding: 1.5rem;
+  }
+}

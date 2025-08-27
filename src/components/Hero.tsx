@@ -120,9 +120,7 @@ const Hero = () => {
               className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-slate-800 mb-6 leading-tight"
             >
               Where Nature's{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-lime-600">
-                Purity
-              </span>{' '}
+              <span className="text-teal-600">Purity</span>{' '}
               Meets Artisan Craft
             </motion.h1>
 
@@ -140,16 +138,16 @@ const Hero = () => {
             >
               <Link
                 to="/shop"
-                className="group relative bg-gradient-to-r from-teal-600 to-teal-700 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-2xl hover:shadow-teal-200 transition-all duration-300 transform hover:-translate-y-1 inline-flex items-center justify-center"
+                className="group relative bg-gradient-to-r from-teal-600 to-teal-700 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-2xl hover:shadow-teal-200 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 inline-flex items-center justify-center"
               >
                 <span className="relative z-10">Explore Collection</span>
                 <FiArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 <div className="absolute inset-0 bg-gradient-to-r from-teal-700 to-teal-800 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
               </Link>
 
-              <button className="group flex items-center justify-center px-8 py-4 text-slate-700 font-semibold hover:text-teal-700 transition-colors">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center group-hover:bg-teal-50 transition-colors mr-3 shadow-sm">
-                  <FiPlay className="h-5 w-5 text-teal-600" />
+              <button className="group flex items-center justify-center px-8 py-4 bg-white text-slate-700 font-semibold rounded-xl border-2 border-teal-600 hover:bg-teal-600 hover:text-white hover:border-teal-700 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors mr-3">
+                  <FiPlay className="h-5 w-5 text-teal-600 group-hover:text-white transition-colors" />
                 </div>
                 Watch Our Story
               </button>

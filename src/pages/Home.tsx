@@ -1,9 +1,10 @@
+// Home.tsx
 import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import IconSection from '../components/IconSection';
 import ProductShowcase from '../components/ProductShowcase';
 import TestimonialSection from '../components/TestimonialSection';
-import NewsletterForm from '../components/NewsletterForm';
+import NewsletterSection from '../components/NewsletterSection'; // Changed import
 
 const Home = () => {
   return (
@@ -18,7 +19,7 @@ const Home = () => {
         <IconSection />
         <ProductShowcase />
         <TestimonialSection />
-        <NewsletterForm />
+        <NewsletterSection /> {/* Changed component */}
       </div>
     </>
   );

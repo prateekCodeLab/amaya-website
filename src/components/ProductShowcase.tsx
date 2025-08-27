@@ -1,4 +1,4 @@
-// New src/components/ProductShowcase.tsx
+// Updated src/components/ProductShowcase.tsx
 import { motion } from 'framer-motion';
 import { FiStar, FiShoppingBag } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -12,8 +12,10 @@ const ProductShowcase = () => {
       description: 'Calming French lavender essential oil in a creamy goat milk base',
       price: 14.99,
       rating: 4.9,
+      reviewCount: 128,
       image: 'https://images.unsplash.com/photo-1594035910387-df1d6b81b590?w=400&h=400&fit=crop&crop=center&q=80',
-      category: 'Calming'
+      category: 'Calming',
+      badge: 'Best Seller'
     },
     {
       id: 2,
@@ -21,8 +23,10 @@ const ProductShowcase = () => {
       description: 'Nourishing blend with organic honey and colloidal oatmeal',
       price: 12.99,
       rating: 4.8,
+      reviewCount: 94,
       image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop&crop=center&q=80',
-      category: 'Nourishing'
+      category: 'Nourishing',
+      badge: 'New'
     },
     {
       id: 3,
@@ -30,8 +34,10 @@ const ProductShowcase = () => {
       description: 'Invigorating blend of orange, lemon, and grapefruit essential oils',
       price: 13.99,
       rating: 4.7,
+      reviewCount: 76,
       image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&h=400&fit=crop&crop=center&q=80',
-      category: 'Energizing'
+      category: 'Energizing',
+      badge: 'Popular'
     }
   ];
 
@@ -87,9 +93,24 @@ const ProductShowcase = () => {
             <motion.div
               key={product.id}
               variants={itemVariants}
-              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group"
+              className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group relative"
               whileHover={{ y: -8 }}
             >
+              {/* Product badge */}
+              {product.badge && (
+                <div className="absolute top-4 right-4 z-10">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    product.badge === 'Best Seller' 
+                      ? 'bg-coral-100 text-coral-800' 
+                      : product.badge === 'New'
+                      ? 'bg-teal-100 text-teal-800'
+                      : 'bg-lime-100 text-lime-800'
+                  }`}>
+                    {product.badge}
+                  </span>
+                </div>
+              )}
+              
               <div className="relative overflow-hidden">
                 <ImageWithFallback
                   src={product.image}
@@ -135,11 +156,11 @@ const ProductShowcase = () => {
                       ))}
                     </div>
                     <span className="text-sm text-slate-500 ml-1">
-                      ({product.rating})
+                      {product.rating} ({product.reviewCount} reviews)
                     </span>
                   </div>
 
-                  <button className="bg-teal-600 text-white p-3 rounded-full hover:bg-teal-700 transition-colors">
+                  <button className="bg-teal-600 text-white p-3 rounded-full hover:bg-teal-700 transition-colors transform hover:scale-110">
                     <FiShoppingBag className="h-4 w-4" />
                   </button>
                 </div>
@@ -157,7 +178,7 @@ const ProductShowcase = () => {
         >
           <Link
             to="/shop"
-            className="inline-flex items-center px-8 py-4 bg-transparent border-2 border-teal-600 text-teal-600 rounded-xl font-semibold hover:bg-teal-600 hover:text-white transition-all duration-300"
+            className="inline-flex items-center px-8 py-4 bg-transparent border-2 border-teal-600 text-teal-600 rounded-xl font-semibold hover:bg-teal-600 hover:text-white transition-all duration-300 transform hover:-translate-y-1"
           >
             View All Products
             <FiShoppingBag className="ml-2 h-5 w-5" />

@@ -1,31 +1,30 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiHeart, FiShoppingBag, FiStar, FiEye } from 'react-icons/fi';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import { PLACEHOLDERS } from '../utils/constants';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import LoadingSpinner from './LoadingSpinner';
+import ImageWithFallback from './ImageWithFallback';
 
 interface ProductCardProps {
   product: Product;
   onAddToCart?: () => void;
   showWishlist?: boolean;
   className?: string;
+  index?: number;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ 
   product, 
   onAddToCart,
   showWishlist = true,
-  className = '' 
+  className = '',
+  index = 0
 }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [cardVisible, setCardVisible] = useState(false);
   
   const cardRef = useRef<HTMLDivElement>(null);
@@ -61,84 +60,86 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     }
   };
 
-  const handleImageError = () => {
-    console.warn(`Image failed to load: ${product.image}`);
-    setImageError(true);
-  };
-
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-  };
-
   const handleWishlistToggle = () => {
     setIsWishlisted(!isWishlisted);
   };
 
-  const imageSrc = imageError ? PLACEHOLDERS.product : product.image;
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: {
+        delay: index * 0.1,
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
-    <div 
+    <motion.div
       ref={cardRef}
-      className={`product-card group ${className} ${
-        cardVisible ? 'animate-scale-in opacity-100' : 'opacity-0'
-      }`}
+      variants={cardVariants}
+      initial="hidden"
+      animate={cardVisible ? "visible" : "hidden"}
+      className={`product-card group ${className} bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ y: -8 }}
     >
-      <div className="relative aspect-square overflow-hidden rounded-t-2xl">
+      <div className="relative aspect-square overflow-hidden">
         <Link 
           to={`/product/${product.id}`} 
           className="block h-full relative overflow-hidden"
           aria-label={`View details for ${product.name}`}
         >
-          {/* Loading state */}
-          {!imageLoaded && !imageError && (
-            <div className="absolute inset-0 bg-gradient-to-br from-teal-50 to-lime-50 flex items-center justify-center">
-              <LoadingSpinner size="small" />
-            </div>
-          )}
-          
-          {/* Main image */}
-          <LazyLoadImage
-            src={imageSrc}
+          <ImageWithFallback
+            src={product.image}
             alt={product.name}
-            className={`product-card-image w-full h-full object-cover transition-all duration-700 ease-out-quint ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            effect="blur"
-            placeholderSrc={PLACEHOLDERS.product}
-            onLoad={handleImageLoad}
-            onError={handleImageError}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            fallbackType="product"
             width={400}
             height={400}
-            crossOrigin="anonymous"
           />
           
           {/* Hover overlay */}
-          <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-all duration-500 ${
-            isHovered ? 'opacity-100' : 'opacity-0'
-          }`}>
-            <div className="transform transition-all duration-500 ease-out-quint translate-y-4 group-hover:translate-y-0">
-              <FiEye className="h-8 w-8 text-white" />
-            </div>
-          </div>
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div 
+                className="absolute inset-0 bg-black/40 flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1, duration: 0.3 }}
+                >
+                  <FiEye className="h-8 w-8 text-white" />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </Link>
         
         {/* Wishlist button */}
         {showWishlist && (
-          <button
+          <motion.button
             onClick={handleWishlistToggle}
             className={`absolute top-4 right-4 p-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
               isWishlisted 
-                ? 'text-coral-500 bg-white shadow-lg scale-100' 
-                : 'text-slate-600 bg-white/90 hover:bg-white hover:text-coral-500 scale-90 group-hover:scale-100'
+                ? 'text-coral-500 bg-white shadow-lg' 
+                : 'text-slate-600 bg-white/90 hover:bg-white hover:text-coral-500'
             }`}
+            whileTap={{ scale: 0.9 }}
             aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           >
-            <FiHeart className={`h-5 w-5 transition-all duration-300 ${
-              isWishlisted ? 'fill-current scale-110' : 'group-hover:scale-110'
-            }`} />
-          </button>
+            <FiHeart className={`h-5 w-5 transition-all ${isWishlisted ? 'fill-current' : ''}`} />
+          </motion.button>
         )}
 
         {/* Out of stock badge */}
@@ -149,20 +150,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         {/* Quick add to cart button */}
-        <button
-          onClick={handleAddToCart}
-          disabled={isAddingToCart || !product.inStock}
-          className={`absolute bottom-4 right-4 bg-teal-600 text-white p-3 rounded-full transition-all duration-500 ease-out-quint focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${
-            isHovered ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
-          aria-label="Add to cart"
-        >
-          {isAddingToCart ? (
-            <LoadingSpinner size="small" />
-          ) : (
-            <FiShoppingBag className="h-5 w-5" />
+        <AnimatePresence>
+          {isHovered && product.inStock && (
+            <motion.button
+              onClick={handleAddToCart}
+              disabled={isAddingToCart}
+              className="absolute bottom-4 right-4 bg-teal-600 text-white p-3 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="Add to cart"
+            >
+              {isAddingToCart ? (
+                <LoadingSpinner size="small" />
+              ) : (
+                <FiShoppingBag className="h-5 w-5" />
+              )}
+            </motion.button>
           )}
-        </button>
+        </AnimatePresence>
       </div>
 
       <div className="p-6">
@@ -203,10 +212,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </span>
           </div>
 
-          <button
+          <motion.button
             onClick={handleAddToCart}
             disabled={isAddingToCart || !product.inStock}
-            className="bg-teal-600 text-white p-3 rounded-full hover:bg-teal-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transform hover:scale-110 disabled:hover:scale-100 shadow-md hover:shadow-lg"
+            className="bg-teal-600 text-white p-3 rounded-full hover:bg-teal-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 shadow-md hover:shadow-lg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             aria-label="Add to cart"
           >
             {isAddingToCart ? (
@@ -214,10 +225,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             ) : (
               <FiShoppingBag className="h-4 w-4" />
             )}
-          </button>
+          </motion.button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

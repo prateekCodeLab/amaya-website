@@ -66,12 +66,12 @@ export const PLACEHOLDERS = {
   `)}`
 };
 
-export const ARTICLES = [
+export const ARTICLES: Article[] = [
   {
     id: 1,
     title: 'The Art of Traditional Soap Making',
     excerpt: 'Discover the centuries-old techniques that make our soaps unique and how we preserve these methods in modern production.',
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200&q=80',
+    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03',
     date: 'March 15, 2024',
     readTime: '5 min read'
   },
@@ -79,7 +79,7 @@ export const ARTICLES = [
     id: 2,
     title: 'Benefits of Goat Milk for Skin',
     excerpt: 'Learn why goat milk is nature\'s perfect ingredient for sensitive skin and how it provides natural moisturizing benefits.',
-    image: 'https://images.unsplash.com/photo-1594035910387-df1d6b81b590?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200&q=80',
+    image: 'https://images.unsplash.com/photo-1594035910387-df1d6b81b590',
     date: 'February 28, 2024',
     readTime: '7 min read'
   },
@@ -87,19 +87,57 @@ export const ARTICLES = [
     id: 3,
     title: 'Sustainable Sourcing Practices',
     excerpt: 'How we ensure ethical and environmentally responsible ingredient sourcing from local Bulgarian farmers and producers.',
-    image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200&q=80',
+    image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b',
     date: 'January 12, 2024',
     readTime: '4 min read'
   }
 ];
 
-// Utility function to fix image URLs
-export const optimizeImageUrl = (url: string, width: number, height: number): string => {
-  if (!url.includes('unsplash.com')) return url;
+export const NAV_LINKS = [
+  { name: 'Home', path: '/', icon: '🏠' },
+  { name: 'Shop', path: '/shop', icon: '🛍️' },
+  { name: 'About', path: '/about', icon: 'ℹ️' },
+  { name: 'Journal', path: '/journal', icon: '📝' },
+  { name: 'Contact', path: '/contact', icon: '📞' },
+];
+
+export const SOCIAL_MEDIA = [
+  { name: 'Instagram', icon: '📷', url: 'https://instagram.com' },
+  { name: 'Facebook', icon: '👍', url: 'https://facebook.com' },
+  { name: 'Pinterest', icon: '📌', url: 'https://pinterest.com' }
+];
+
+export const POLICY_LINKS = [
+  { name: 'Shipping Policy', path: '/policies#shipping' },
+  { name: 'Returns Policy', path: '/policies#returns' },
+  { name: 'Privacy Policy', path: '/policies#privacy' },
+  { name: 'Contact Us', path: '/contact' }
+];
+
+export const optimizeImageUrl = (
+  url: string, 
+  width: number = 800, 
+  height: number = 600, 
+  quality: number = 80
+): string => {
+  if (!url || url.startsWith('data:')) return url;
   
-  // Check if URL already has query parameters
-  const hasQuery = url.includes('?');
-  const baseUrl = hasQuery ? url.split('?')[0] : url;
-  
-  return `${baseUrl}?ixlib=rb-4.0.3&auto=format&fit=crop&w=${width}&h=${height}&q=80`;
+  try {
+    const urlObj = new URL(url);
+    
+    // Handle Unsplash images
+    if (url.includes('unsplash.com')) {
+      urlObj.searchParams.set('w', width.toString());
+      urlObj.searchParams.set('h', height.toString());
+      urlObj.searchParams.set('fit', 'crop');
+      urlObj.searchParams.set('q', quality.toString());
+      urlObj.searchParams.set('auto', 'format');
+      return urlObj.toString();
+    }
+    
+    // Handle other image URLs
+    return url;
+  } catch {
+    return url;
+  }
 };

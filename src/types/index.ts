@@ -1,14 +1,3 @@
-import { ComponentType } from 'react';
-
-export interface FeaturedProduct {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  rating: string;
-  description?: string;
-}
-
 export interface Product {
   id: number;
   name: string;
@@ -18,11 +7,28 @@ export interface Product {
   reviewCount: number;
   image: string;
   category?: string;
-  inStock?: boolean;
+  inStock: boolean;
+  slug?: string;
+  ingredients?: string[];
+  benefits?: string[];
 }
 
 export interface CartItem extends Product {
   quantity: number;
+}
+
+export interface NavLink {
+  name: string;
+  path: string;
+  icon?: string;
+}
+
+export interface FeaturedProduct {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  rating: string;
 }
 
 export interface Article {
@@ -35,29 +41,20 @@ export interface Article {
   content?: string;
 }
 
-export interface NavLink {
+export interface NewsletterFormData {
+  email: string;
+  name?: string;
+}
+
+export interface ContactFormData {
   name: string;
-  path: string;
-  icon?: ComponentType;
+  email: string;
+  message: string;
 }
 
-export interface Placeholders {
-  product: string;
-  hero: string;
-  article: string;
+export interface ImageOptimizationOptions {
+  width?: number;
+  height?: number;
+  quality?: number;
+  format?: 'webp' | 'jpg' | 'png';
 }
-
-export interface IconFeature {
-  id: number;
-  title: string;
-  description: string;
-  icon: ComponentType;
-}
-
-export interface ApiResponse<T> {
-  data: T;
-  success: boolean;
-  message?: string;
-}
-
-export type LoadingState = 'idle' | 'loading' | 'succeeded' | 'failed';

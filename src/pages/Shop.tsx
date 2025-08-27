@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import ProductCard from '../components/ProductCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useCart } from '../context/CartContext';
-import { Helmet } from 'react-helmet-async';
 import { Product } from '../types';
 import { optimizeImageUrl } from '../utils/constants';
 
@@ -14,7 +14,7 @@ const products: Product[] = [
     price: 12.99,
     rating: 4.8,
     reviewCount: 128,
-    image: optimizeImageUrl('https://images.unsplash.com/photo-1594035910387-df1d6b81b590', 400, 400),
+    image: optimizeImageUrl('https://images.unsplash.com/photo-1556228720-195a672e8a03', 400, 400),
     category: 'Nourishing',
     inStock: true
   },
@@ -171,11 +171,12 @@ export default function Shop() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sortedProducts.map((product) => (
+              {sortedProducts.map((product, index) => (
                 <ProductCard 
                   key={product.id} 
                   product={product} 
                   onAddToCart={() => addToCart(product)}
+                  index={index}
                 />
               ))}
             </div>

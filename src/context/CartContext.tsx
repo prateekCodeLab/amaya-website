@@ -9,6 +9,7 @@ interface CartContextType {
   clearCart: () => void;
   getCartTotal: () => number;
   getCartItemsCount: () => number;
+  isInCart: (productId: number) => boolean;
 }
 
 interface CartProviderProps {
@@ -61,7 +62,6 @@ const cartReducer = (state: CartItem[], action: CartAction): CartItem[] => {
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, dispatch] = useReducer(cartReducer, [], () => {
-    // Initialize from localStorage
     try {
       const savedCart = localStorage.getItem('amaya-cart');
       return savedCart ? JSON.parse(savedCart) : [];
@@ -70,7 +70,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
   });
 
-  // Persist cart to localStorage
   React.useEffect(() => {
     localStorage.setItem('amaya-cart', JSON.stringify(cartItems));
   }, [cartItems]);
@@ -99,6 +98,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   }, [cartItems]);
 
+  const isInCart = useCallback((productId: number) => {
+    return cartItems.some(item => item.id === productId);
+  }, [cartItems]);
+
   const value: CartContextType = {
     cartItems,
     addToCart,
@@ -106,7 +109,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     updateQuantity,
     clearCart,
     getCartTotal,
-    getCartItemsCount
+    getCartItemsCount,
+    isInCart
   };
 
   return (

@@ -1,83 +1,57 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import LoadingSpinner from './LoadingSpinner';
+// New src/components/NewsletterSection.tsx
+import { motion } from 'framer-motion';
+import { FiMail } from 'react-icons/fi';
 
-interface NewsletterFormData {
-  email: string;
-}
-
-export default function NewsletterForm() {
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors },
-    reset
-  } = useForm<NewsletterFormData>();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-
-  const onSubmit = async (data: NewsletterFormData) => {
-    setIsSubmitting(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setSubmitSuccess(true);
-      reset();
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
+const NewsletterSection = () => {
   return (
-    <form 
-      onSubmit={handleSubmit(onSubmit)} 
-      className="space-y-4"
-      aria-live="polite"
-    >
-      {submitSuccess ? (
-        <p className="text-green-600 font-sans text-sm">
-          Thank you for subscribing! Check your email for confirmation.
-        </p>
-      ) : (
-        <>
-          <div>
+    <section className="py-20 bg-gradient-to-br from-teal-600 to-teal-700 text-white">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-3xl mx-auto"
+        >
+          <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <FiMail className="h-8 w-8" />
+          </div>
+
+          <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+            Join the Amaya Family
+          </h2>
+          
+          <p className="font-sans text-teal-100 mb-8 text-lg">
+            Subscribe to our newsletter for exclusive offers, skincare tips, and new product launches.
+          </p>
+
+          <motion.form
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
+          >
             <input
               type="email"
-              placeholder="Your email"
-              className={`w-full px-4 py-2 rounded border ${
-                errors.email ? 'border-red-500' : 'border-slate-300'
-              } focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors`}
-              {...register("email", { 
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Please enter a valid email"
-                }
-              })}
-              aria-invalid={errors.email ? "true" : "false"}
-              aria-describedby="email-error"
+              placeholder="Enter your email"
+              className="flex-1 px-6 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl placeholder:text-teal-200 focus:outline-none focus:ring-2 focus:ring-white/50"
             />
-            {errors.email && (
-              <p id="email-error" className="text-red-500 text-xs mt-1">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition-colors w-full flex justify-center items-center gap-2 disabled:opacity-70"
-          >
-            {isSubmitting ? (
-              <>
-                <LoadingSpinner size="small" />
-                Subscribing...
-              </>
-            ) : (
-              'Subscribe'
-            )}
-          </button>
-        </>
-      )}
-    </form>
+            <button
+              type="submit"
+              className="bg-white text-teal-700 px-8 py-4 rounded-xl font-semibold hover:bg-teal-50 transition-colors"
+            >
+              Subscribe
+            </button>
+          </motion.form>
+
+          <p className="font-sans text-teal-200 text-sm mt-4">
+            No spam, just pure skincare goodness. Unsubscribe anytime.
+          </p>
+        </motion.div>
+      </div>
+    </section>
   );
-}
+};
+
+export default NewsletterSection;

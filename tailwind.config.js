@@ -118,7 +118,7 @@ module.exports = {
     },
   },
   plugins: [
-    function({ addUtilities, addComponents }) {
+    function({ addUtilities }) {
       const newUtilities = {
         '.text-balance': {
           textWrap: 'balance',

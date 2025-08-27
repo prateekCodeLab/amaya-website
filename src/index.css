@@ -74,9 +74,9 @@
     @apply bg-gradient-to-b from-teal-500 to-teal-600 rounded-full hover:from-teal-600 hover:to-teal-700 transition-all duration-300;
   }
 
-  /* Selection styling - Fixed the issue here */
+  /* Selection styling */
   ::selection {
-    background-color: rgba(42, 183, 202, 0.3); /* teal-500 with 30% opacity */
+    background-color: rgba(42, 183, 202, 0.3);
     color: theme('colors.slate.900');
   }
 

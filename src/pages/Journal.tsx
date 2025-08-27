@@ -1,8 +1,8 @@
+// Updated src/pages/Journal.tsx
 import { Link } from 'react-router-dom';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import { ARTICLES, PLACEHOLDERS } from '../utils/constants';
 import { Helmet } from 'react-helmet-async';
+import { ARTICLES, PLACEHOLDERS } from '../utils/constants';
+import ImageWithFallback from '../components/ImageWithFallback';
 
 export default function Journal() {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, articleId: number) => {
@@ -15,6 +15,7 @@ export default function Journal() {
     <>
       <Helmet>
         <title>Amaya | Journal</title>
+        <meta name="description" content="Skincare wisdom, artisan stories, and the science behind our formulations" />
       </Helmet>
       
       <div className="bg-slate-50 min-h-screen py-16">
@@ -30,13 +31,11 @@ export default function Journal() {
             {ARTICLES.map(article => (
               <article key={article.id} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 group">
                 <div className="h-48 overflow-hidden">
-                  <LazyLoadImage
+                  <ImageWithFallback
                     src={article.image}
                     alt={article.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    effect="blur"
-                    placeholderSrc={PLACEHOLDERS.article}
-                    onError={(e) => handleImageError(e, article.id)}
+                    fallbackType="article"
                     width={400}
                     height={200}
                   />

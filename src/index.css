@@ -419,3 +419,55 @@
     }
   }
 }
+
+/* Journal-specific styles */
+.journal-card {
+  transition: all 0.3s ease;
+}
+
+.journal-card:hover {
+  transform: translateY(-5px);
+}
+
+.category-badge {
+  transition: all 0.3s ease;
+}
+
+.category-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.read-more-link {
+  position: relative;
+}
+
+.read-more-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: theme('colors.teal.600');
+  transition: width 0.3s ease;
+}
+
+.read-more-link:hover::after {
+  width: 100%;
+}
+
+/* Gradient backgrounds for featured section */
+.featured-gradient {
+  background: linear-gradient(135deg, theme('colors.teal.50') 0%, theme('colors.lime.50') 100%);
+}
+
+/* Load more button animation */
+.load-more-btn {
+  transition: all 0.3s ease;
+}
+
+.load-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}

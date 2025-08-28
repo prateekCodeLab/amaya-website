@@ -71,6 +71,7 @@ export const PLACEHOLDERS = {
   `)}`
 };
 
+// Add to existing ARTICLES array with categories
 export const ARTICLES: Article[] = [
   {
     id: 1,
@@ -78,7 +79,8 @@ export const ARTICLES: Article[] = [
     excerpt: 'Discover the centuries-old techniques that make our soaps unique and how we preserve these methods in modern production.',
     image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03',
     date: 'March 15, 2024',
-    readTime: '5 min read'
+    readTime: '5 min read',
+    category: 'Craft Techniques'
   },
   {
     id: 2,
@@ -86,7 +88,8 @@ export const ARTICLES: Article[] = [
     excerpt: 'Learn why goat milk is nature\'s perfect ingredient for sensitive skin and how it provides natural moisturizing benefits.',
     image: 'https://images.unsplash.com/photo-1594035910387-df1d6b81b590',
     date: 'February 28, 2024',
-    readTime: '7 min read'
+    readTime: '7 min read',
+    category: 'Skincare Wisdom'
   },
   {
     id: 3,
@@ -94,9 +97,48 @@ export const ARTICLES: Article[] = [
     excerpt: 'How we ensure ethical and environmentally responsible ingredient sourcing from local Bulgarian farmers and producers.',
     image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b',
     date: 'January 12, 2024',
-    readTime: '4 min read'
+    readTime: '4 min read',
+    category: 'Sourcing Stories'
+  },
+  {
+    id: 4,
+    title: 'The History of Bulgarian Rose Oil',
+    excerpt: 'Explore the rich history and production of one of the world\'s most precious essential oils used in our luxury soaps.',
+    image: 'https://images.unsplash.com/photo-1598632173764-6f5e705dab76',
+    date: 'December 5, 2023',
+    readTime: '6 min read',
+    category: 'Ingredient Spotlight'
+  },
+  {
+    id: 5,
+    title: 'Creating Your At-Home Spa Experience',
+    excerpt: 'Transform your daily routine into a luxurious self-care ritual with our expert tips and product recommendations.',
+    image: 'https://images.unsplash.com/photo-1544161515-9447d0fbd7b9',
+    date: 'November 18, 2023',
+    readTime: '8 min read',
+    category: 'Self-Care Rituals'
+  },
+  {
+    id: 6,
+    title: 'Understanding Sensitive Skin Needs',
+    excerpt: 'A comprehensive guide to identifying and caring for sensitive skin with gentle, effective natural ingredients.',
+    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348',
+    date: 'October 22, 2023',
+    readTime: '5 min read',
+    category: 'Skincare Wisdom'
   }
 ];
+
+// Add featured article
+export const FEATURED_ARTICLE: Article = {
+  id: 7,
+  title: 'The Journey of Our Artisan Soap Makers',
+  excerpt: 'Follow the inspiring story of our master soap makers in Bulgaria and their dedication to preserving traditional methods while innovating for modern skincare needs. Discover how generations of expertise come together in each bar of Amaya soap.',
+  image: 'https://images.unsplash.com/photo-1589985270826-4b7fe135a9c4',
+  date: 'April 2, 2024',
+  readTime: '10 min read',
+  category: 'Artisan Stories'
+};
 
 export const NAV_LINKS = [
   { name: 'Home', path: '/', icon: '🏠' },

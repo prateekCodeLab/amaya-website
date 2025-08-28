@@ -363,45 +363,59 @@
   }
 }
 
-/* Add to existing index.css */
+/* Add to the existing index.css file */
 @layer utilities {
-  /* Scroll-triggered animations */
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Enhanced line clamping */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
   }
   
-  .animate-on-scroll.animated {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Standardized buttons */
-  .btn-standard {
-    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
   
-  .btn-primary {
-    @apply btn-standard bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-500;
+  /* Tooltip styles */
+  [data-tooltip] {
+    position: relative;
   }
   
-  .btn-secondary {
-    @apply btn-standard bg-white text-teal-600 border-2 border-teal-600 hover:bg-teal-600 hover:text-white focus:ring-teal-500;
-  }
-}
-
-/* Mobile responsiveness improvements */
-@media (max-width: 768px) {
-  .mobile-stack {
-    flex-direction: column;
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: #334155;
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 100;
+    margin-bottom: 5px;
   }
   
-  .mobile-center {
-    text-align: center;
-  }
-  
-  .mobile-padding {
-    padding: 1.5rem;
+  /* Mobile-first responsive improvements */
+  @media (max-width: 640px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    
+    .filter-buttons {
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .filter-buttons::-webkit-scrollbar {
+      display: none;
+    }
   }
 }

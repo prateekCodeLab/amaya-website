@@ -11,6 +11,7 @@ export interface Product {
   slug?: string;
   ingredients?: string[];
   benefits?: string[];
+  badge?: 'Bestseller' | 'New' | 'Popular'; // Added badge property
 }
 
 export interface CartItem extends Product {

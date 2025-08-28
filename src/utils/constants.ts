@@ -8,9 +8,14 @@ export const PLACEHOLDERS = {
         </linearGradient>
       </defs>
       <rect width="100%" height="100%" fill="url(#grad)" />
-      <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="16" 
-            text-anchor="middle" dy=".3em" fill="#64748B">
-        Amaya Soap
+      <rect x="50" y="50" width="300" height="300" rx="20" fill="white" opacity="0.8" />
+      <text x="50%" y="45%" font-family="Arial, sans-serif" font-size="18" 
+            text-anchor="middle" fill="#64748B" font-weight="bold">
+        Amaya
+      </text>
+      <text x="50%" y="55%" font-family="Arial, sans-serif" font-size="14" 
+            text-anchor="middle" fill="#64748B">
+        Goat Milk Soap
       </text>
     </svg>
   `)}`,

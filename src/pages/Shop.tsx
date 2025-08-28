@@ -6,73 +6,94 @@ import { useCart } from '../context/CartContext';
 import { Product } from '../types';
 import { optimizeImageUrl } from '../utils/constants';
 
+// Consistent placeholder images for all products
+const PLACEHOLDER_IMAGES = [
+  optimizeImageUrl('https://images.unsplash.com/photo-1594035910387-df1d6b81b590', 400, 400), // Soap bar 1
+  optimizeImageUrl('https://images.unsplash.com/photo-1556228720-195a672e8a03', 400, 400), // Soap bar 2
+  optimizeImageUrl('https://images.unsplash.com/photo-1571781926291-c477ebfd024b', 400, 400), // Soap bar 3
+];
+
 const products: Product[] = [
   {
     id: 1,
-    name: 'Honey & Oat Goat Milk Soap',
+    name: 'Honey & Oat Soap',
     description: 'Nourishing blend with Bulgarian honey and organic oats',
     price: 12.99,
     rating: 4.8,
     reviewCount: 128,
-    image: optimizeImageUrl('https://images.unsplash.com/photo-1556228720-195a672e8a03', 400, 400),
+    image: PLACEHOLDER_IMAGES[0],
     category: 'Nourishing',
-    inStock: true
+    inStock: true,
+    badge: 'Bestseller'
   },
   {
     id: 2,
-    name: 'Lavender Dream Goat Milk Soap',
+    name: 'Lavender Dream Soap',
     description: 'Calming French lavender essential oil in a creamy base',
     price: 14.99,
     rating: 5,
     reviewCount: 92,
-    image: optimizeImageUrl('https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec', 400, 400),
+    image: PLACEHOLDER_IMAGES[1],
     category: 'Calming',
-    inStock: true
+    inStock: true,
+    badge: 'New'
   },
   {
     id: 3,
-    name: 'Charcoal Detox Goat Milk Soap',
+    name: 'Charcoal Detox Soap',
     description: 'Deep cleansing activated charcoal for balanced skin',
     price: 13.99,
     rating: 4,
     reviewCount: 76,
-    image: optimizeImageUrl('https://images.unsplash.com/photo-1625772452859-1c03d5bf1137', 400, 400),
+    image: PLACEHOLDER_IMAGES[2],
     category: 'Detox',
     inStock: true
   },
   {
     id: 4,
-    name: 'Rosemary Mint Goat Milk Soap',
+    name: 'Rosemary Mint Soap',
     description: 'Invigorating herbal blend for refreshed skin',
     price: 11.99,
     rating: 4,
     reviewCount: 64,
-    image: optimizeImageUrl('https://images.unsplash.com/photo-1571781926291-c477ebfd024b', 400, 400),
+    image: PLACEHOLDER_IMAGES[0],
     category: 'Invigorating',
-    inStock: true
+    inStock: true,
+    badge: 'Popular'
   },
   {
     id: 5,
-    name: 'Vanilla Bean Goat Milk Soap',
+    name: 'Vanilla Bean Soap',
     description: 'Warm vanilla pod infusion for sensitive skin',
     price: 15.99,
     rating: 5,
     reviewCount: 143,
-    image: optimizeImageUrl('https://images.unsplash.com/photo-1556228720-195a672e8a03', 400, 400),
+    image: PLACEHOLDER_IMAGES[1],
     category: 'Sensitive',
-    inStock: true
+    inStock: true,
+    badge: 'Bestseller'
   },
   {
     id: 6,
-    name: 'Citrus Burst Goat Milk Soap',
+    name: 'Citrus Burst Soap',
     description: 'Brightening blend of orange, lemon and grapefruit oils',
     price: 12.99,
     rating: 4,
     reviewCount: 87,
-    image: optimizeImageUrl('https://images.unsplash.com/photo-1441986300917-64674bd600d8', 400, 400),
+    image: PLACEHOLDER_IMAGES[2],
     category: 'Brightening',
     inStock: true
   }
+];
+
+// Filter categories
+const FILTER_CATEGORIES = [
+  { id: 'all', label: 'All Products' },
+  { id: 'bestsellers', label: 'Bestsellers' },
+  { id: 'new', label: 'New Arrivals' },
+  { id: 'nourishing', label: 'Nourishing' },
+  { id: 'calming', label: 'Calming' },
+  { id: 'detox', label: 'Detox' },
 ];
 
 export default function Shop() {
@@ -88,8 +109,11 @@ export default function Shop() {
 
   const filteredProducts = products.filter(product => {
     if (filter === 'all') return true;
-    if (filter === 'bestsellers') return product.rating >= 4.5;
-    if (filter === 'new') return product.id >= 4;
+    if (filter === 'bestsellers') return product.badge === 'Bestseller';
+    if (filter === 'new') return product.badge === 'New';
+    if (filter === 'nourishing') return product.category === 'Nourishing';
+    if (filter === 'calming') return product.category === 'Calming';
+    if (filter === 'detox') return product.category === 'Detox';
     return true;
   });
 
@@ -119,19 +143,19 @@ export default function Shop() {
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <div className="flex space-x-2 overflow-x-auto pb-2 w-full md:w-auto">
-              {['all', 'bestsellers', 'new'].map((type) => (
+            <div className="flex flex-wrap gap-2 w-full md:w-auto">
+              {FILTER_CATEGORIES.map((category) => (
                 <button
-                  key={type}
-                  onClick={() => setFilter(type)}
+                  key={category.id}
+                  onClick={() => setFilter(category.id)}
                   className={`px-4 py-2 rounded-full font-sans text-sm font-medium whitespace-nowrap transition-colors ${
-                    filter === type 
+                    filter === category.id 
                       ? 'bg-teal-600 text-white shadow-md' 
                       : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
                   }`}
-                  aria-label={`Filter by ${type}`}
+                  aria-label={`Filter by ${category.label}`}
                 >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                  {category.label}
                 </button>
               ))}
             </div>

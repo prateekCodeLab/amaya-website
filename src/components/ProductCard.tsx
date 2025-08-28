@@ -26,6 +26,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [cardVisible, setCardVisible] = useState(false);
+  const [showQuickView, setShowQuickView] = useState(false);
   
   const cardRef = useRef<HTMLDivElement>(null);
   const { addToCart } = useCart();
@@ -64,6 +65,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     setIsWishlisted(!isWishlisted);
   };
 
+  const renderStars = (rating: number) => {
+    return [...Array(5)].map((_, i) => (
+      <FiStar
+        key={i}
+        className={`h-3 w-3 sm:h-4 sm:w-4 transition-colors duration-300 ${
+          i < Math.floor(rating) 
+            ? 'text-yellow-400 fill-current' 
+            : 'text-slate-300'
+        }`}
+      />
+    ));
+  };
+
   const cardVariants = {
     hidden: { opacity: 0, y: 20, scale: 0.95 },
     visible: { 
@@ -84,12 +98,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       variants={cardVariants}
       initial="hidden"
       animate={cardVisible ? "visible" : "hidden"}
-      className={`product-card group ${className} bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300`}
+      className={`product-card group ${className} bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ y: -8 }}
     >
-      <div className="relative aspect-square overflow-hidden">
+      <div className="relative aspect-square overflow-hidden flex-shrink-0">
         <Link 
           to={`/product/${product.id}`} 
           className="block h-full relative overflow-hidden"
@@ -104,6 +118,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             height={400}
           />
           
+          {/* Product badge */}
+          {product.badge && (
+            <div className="absolute top-4 left-4 z-10">
+              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                product.badge === 'Bestseller' 
+                  ? 'bg-coral-100 text-coral-800' 
+                  : product.badge === 'New'
+                  ? 'bg-teal-100 text-teal-800'
+                  : 'bg-lime-100 text-lime-800'
+              }`}>
+                {product.badge}
+              </span>
+            </div>
+          )}
+
           {/* Hover overlay */}
           <AnimatePresence>
             {isHovered && (
@@ -118,8 +147,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1, duration: 0.3 }}
+                  className="flex flex-col items-center gap-2"
                 >
-                  <FiEye className="h-8 w-8 text-white" />
+                  <FiEye className="h-6 w-6 text-white" />
+                  <span className="text-white text-sm font-medium">Quick View</span>
                 </motion.div>
               </motion.div>
             )}
@@ -130,21 +161,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {showWishlist && (
           <motion.button
             onClick={handleWishlistToggle}
-            className={`absolute top-4 right-4 p-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+            className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
               isWishlisted 
                 ? 'text-coral-500 bg-white shadow-lg' 
                 : 'text-slate-600 bg-white/90 hover:bg-white hover:text-coral-500'
             }`}
             whileTap={{ scale: 0.9 }}
             aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            data-tooltip={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           >
-            <FiHeart className={`h-5 w-5 transition-all ${isWishlisted ? 'fill-current' : ''}`} />
+            <FiHeart className={`h-4 w-4 transition-all ${isWishlisted ? 'fill-current' : ''}`} />
           </motion.button>
         )}
 
         {/* Out of stock badge */}
         {!product.inStock && (
-          <div className="absolute top-4 left-4 bg-slate-500/95 text-white px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm">
+          <div className="absolute top-4 left-4 bg-slate-500/95 text-white px-2 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
             Out of Stock
           </div>
         )}
@@ -155,7 +187,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <motion.button
               onClick={handleAddToCart}
               disabled={isAddingToCart}
-              className="absolute bottom-4 right-4 bg-teal-600 text-white p-3 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="absolute bottom-4 right-4 bg-teal-600 text-white p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
@@ -167,45 +199,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               {isAddingToCart ? (
                 <LoadingSpinner size="small" />
               ) : (
-                <FiShoppingBag className="h-5 w-5" />
+                <FiShoppingBag className="h-4 w-4" />
               )}
             </motion.button>
           )}
         </AnimatePresence>
       </div>
 
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-3">
+      <div className="p-4 flex flex-col flex-grow">
+        <div className="flex justify-between items-start mb-2">
           <Link 
             to={`/product/${product.id}`} 
             className="hover:text-teal-600 transition-colors flex-1 group/title"
           >
-            <h3 className="font-serif font-bold text-lg text-slate-800 line-clamp-2 leading-tight group-hover/title:text-teal-600 transition-colors duration-300">
+            <h3 className="font-serif font-bold text-base text-slate-800 line-clamp-2 leading-tight group-hover/title:text-teal-600 transition-colors duration-300">
               {product.name}
             </h3>
           </Link>
-          <span className="font-sans font-bold text-teal-600 ml-4 whitespace-nowrap">
+          <span className="font-sans font-bold text-teal-600 ml-2 whitespace-nowrap text-base">
             ${product.price.toFixed(2)}
           </span>
         </div>
 
-        <p className="font-sans text-slate-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+        <p className="font-sans text-slate-600 text-xs mb-3 line-clamp-2 leading-relaxed flex-grow">
           {product.description}
         </p>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mt-auto">
           <div className="flex items-center space-x-1">
             <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <FiStar
-                  key={i}
-                  className={`h-4 w-4 transition-colors duration-300 ${
-                    i < Math.floor(product.rating) 
-                      ? 'text-yellow-400 fill-current' 
-                      : 'text-slate-300'
-                  }`}
-                />
-              ))}
+              {renderStars(product.rating)}
             </div>
             <span className="font-sans text-xs text-slate-500 ml-1">
               ({product.reviewCount.toLocaleString()})
@@ -215,7 +238,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <motion.button
             onClick={handleAddToCart}
             disabled={isAddingToCart || !product.inStock}
-            className="bg-teal-600 text-white p-3 rounded-full hover:bg-teal-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 shadow-md hover:shadow-lg"
+            className="bg-teal-600 text-white p-2 rounded-full hover:bg-teal-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 shadow-md hover:shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Add to cart"
@@ -223,7 +246,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {isAddingToCart ? (
               <LoadingSpinner size="small" />
             ) : (
-              <FiShoppingBag className="h-4 w-4" />
+              <FiShoppingBag className="h-3 w-3 sm:h-4 sm:w-4" />
             )}
           </motion.button>
         </div>

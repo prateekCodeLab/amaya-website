@@ -1,7 +1,11 @@
+// Fixed src/pages/Contact.tsx
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { motion } from "framer-motion"; // Added missing import
 import LoadingSpinner from "../components/LoadingSpinner";
-import { FiMail, FiPhone, FiMapPin, FiSend } from "react-icons/fi";
+import { FiMail, FiPhone, FiMapPin, FiSend, FiMessageSquare } from "react-icons/fi";
+import { optimizeImageUrl } from '../utils/constants';
+import ImageWithFallback from '../components/ImageWithFallback';
 
 interface ContactFormData {
   name: string;
@@ -29,28 +33,49 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-teal-50 via-white to-lime-50 py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12 relative">
-            <div className="absolute -top-10 -left-10 w-24 h-24 bg-teal-200/30 rounded-full backdrop-blur-sm"></div>
-            <div className="absolute -bottom-5 -right-5 w-16 h-16 bg-lime-200/30 rounded-full backdrop-blur-sm"></div>
-            
-            <h1 className="font-serif text-4xl md:text-5xl font-bold text-slate-800 mb-6 relative z-10">
-              Get In Touch
-            </h1>
-            <p className="font-sans text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-            </p>
+      {/* Enhanced Hero Section */}
+      <div className="relative py-28 md:py-36 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <ImageWithFallback
+            src={optimizeImageUrl('https://images.unsplash.com/photo-1544966503-7cc5ac882d5e', 2070, 1000)}
+            alt="Amaya soap packaging on desk"
+            className="w-full h-full object-cover"
+            fallbackType="hero"
+            width={2070}
+            height={1000}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-teal-900/70 to-lime-900/50 backdrop-blur-sm"></div>
+          <div className="absolute -top-10 -left-10 w-24 h-24 bg-teal-200/30 rounded-full backdrop-blur-sm"></div>
+          <div className="absolute -bottom-5 -right-5 w-16 h-16 bg-lime-200/30 rounded-full backdrop-blur-sm"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-12">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="font-serif text-4xl md:text-5xl font-bold text-white mb-6"
+            >
+              Connect With Amaya
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.7 }}
+              className="font-sans text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed"
+            >
+              We're here to listen, assist, and ensure your experience with Amaya is as luxurious as our products.
+            </motion.p>
           </div>
         </div>
       </div>
 
       {/* Contact Content */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-16 -mt-20 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           {/* Contact Information */}
-          <div className="space-y-8">
+          <div className="bg-white p-8 rounded-2xl shadow-lg">
             <div>
               <h2 className="font-serif text-2xl font-bold text-slate-800 mb-6">Let's Connect</h2>
               <p className="font-sans text-slate-600 mb-8 leading-relaxed">
@@ -67,6 +92,7 @@ export default function Contact() {
                 <div>
                   <h3 className="font-sans font-medium text-slate-800">Email Us</h3>
                   <p className="font-sans text-slate-600">hello@amayasoaps.com</p>
+                  <p className="font-sans text-sm text-slate-500 mt-1">Response within 24 hours</p>
                 </div>
               </div>
 
@@ -77,6 +103,7 @@ export default function Contact() {
                 <div>
                   <h3 className="font-sans font-medium text-slate-800">Call Us</h3>
                   <p className="font-sans text-slate-600">+1 (555) 123-AMAYA</p>
+                  <p className="font-sans text-sm text-slate-500 mt-1">Mon-Fri, 9AM-5PM EST</p>
                 </div>
               </div>
 
@@ -86,22 +113,23 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-sans font-medium text-slate-800">Visit Us</h3>
-                  <p className="font-sans text-slate-600">123 Artisan Street, Sofia, Bulgaria</p>
+                  <p className="font-sans text-slate-600">123 Artisan Street</p>
+                  <p className="font-sans text-slate-600">Sofia, Bulgaria 1000</p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-slate-200">
-              <h3 className="font-sans font-medium text-slate-800 mb-4">Follow Us</h3>
+            <div className="pt-6 border-t border-slate-200 mt-6">
+              <h3 className="font-sans font-medium text-slate-800 mb-4">Follow Our Journey</h3>
               <div className="flex space-x-4">
-                <a href="#" className="bg-slate-100 p-3 rounded-lg hover:bg-teal-100 transition-colors">
-                  <span className="text-slate-700 hover:text-teal-600">Instagram</span>
+                <a href="#" className="bg-slate-100 p-3 rounded-lg hover:bg-teal-100 transition-colors flex items-center">
+                  <span className="text-slate-700 hover:text-teal-600 text-sm font-medium">Instagram</span>
                 </a>
-                <a href="#" className="bg-slate-100 p-3 rounded-lg hover:bg-teal-100 transition-colors">
-                  <span className="text-slate-700 hover:text-teal-600">Facebook</span>
+                <a href="#" className="bg-slate-100 p-3 rounded-lg hover:bg-teal-100 transition-colors flex items-center">
+                  <span className="text-slate-700 hover:text-teal-600 text-sm font-medium">Facebook</span>
                 </a>
-                <a href="#" className="bg-slate-100 p-3 rounded-lg hover:bg-teal-100 transition-colors">
-                  <span className="text-slate-700 hover:text-teal-600">Pinterest</span>
+                <a href="#" className="bg-slate-100 p-3 rounded-lg hover:bg-teal-100 transition-colors flex items-center">
+                  <span className="text-slate-700 hover:text-teal-600 text-sm font-medium">Pinterest</span>
                 </a>
               </div>
             </div>
@@ -118,7 +146,7 @@ export default function Contact() {
                 </p>
                 <button
                   onClick={() => setSubmitSuccess(false)}
-                  className="bg-teal-600 text-white font-sans font-medium px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors hover-lift"
+                  className="bg-gradient-to-r from-teal-600 to-teal-700 text-white font-sans font-medium px-6 py-3 rounded-lg hover:from-teal-700 hover:to-teal-800 transition-all duration-300 hover-lift"
                 >
                   Send Another Message
                 </button>
@@ -191,15 +219,16 @@ export default function Contact() {
                   ) : (
                     <>
                       <FiSend className="mr-2 h-5 w-5" />
-                      Let's Connect
+                      Send Message
                     </>
                   )}
                 </button>
               </form>
             )}
 
-            <p className="font-sans text-slate-600 mt-10 text-center italic border-t border-slate-100 pt-6">
-              "Your journey with Amaya is personal. And so is our promise to always listen."
+            <p className="font-sans text-slate-600 mt-10 text-center border-t border-slate-100 pt-6">
+              <FiMessageSquare className="h-5 w-5 text-teal-600 mx-auto mb-2" />
+              "Every message is as personal as every bar of Amaya soap."
             </p>
           </div>
         </div>

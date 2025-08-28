@@ -24,9 +24,12 @@ const Layout: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
-        <Outlet />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };
@@ -37,10 +40,7 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <HelmetProvider>
         <CartProvider>
-          <ScrollToTop />
-          <Suspense fallback={<LoadingSpinner />}>
-            <Outlet />
-          </Suspense>
+          <Outlet />
         </CartProvider>
       </HelmetProvider>
     </ErrorBoundary>

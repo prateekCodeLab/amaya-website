@@ -1,3 +1,4 @@
+// Updated src/components/ProductCard.tsx
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiHeart, FiShoppingBag, FiStar, FiEye } from 'react-icons/fi';
@@ -121,12 +122,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Product badge */}
           {product.badge && (
             <div className="absolute top-4 left-4 z-10">
-              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+              <span className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
                 product.badge === 'Bestseller' 
-                  ? 'bg-coral-100 text-coral-800' 
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white' 
                   : product.badge === 'New'
-                  ? 'bg-teal-100 text-teal-800'
-                  : 'bg-lime-100 text-lime-800'
+                  ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white'
+                  : 'bg-gradient-to-r from-lime-500 to-lime-600 text-white'
               }`}>
                 {product.badge}
               </span>
@@ -161,7 +162,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {showWishlist && (
           <motion.button
             onClick={handleWishlistToggle}
-            className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+            className={`absolute top-4 right-4 p-2.5 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
               isWishlisted 
                 ? 'text-coral-500 bg-white shadow-lg' 
                 : 'text-slate-600 bg-white/90 hover:bg-white hover:text-coral-500'
@@ -176,7 +177,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Out of stock badge */}
         {!product.inStock && (
-          <div className="absolute top-4 left-4 bg-slate-500/95 text-white px-2 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
+          <div className="absolute top-4 left-4 bg-slate-500/95 text-white px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm">
             Out of Stock
           </div>
         )}
@@ -187,7 +188,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <motion.button
               onClick={handleAddToCart}
               disabled={isAddingToCart}
-              className="absolute bottom-4 right-4 bg-teal-600 text-white p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="absolute bottom-4 right-4 bg-gradient-to-r from-teal-600 to-teal-700 text-white p-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
@@ -206,8 +207,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </AnimatePresence>
       </div>
 
-      <div className="p-4 flex flex-col flex-grow">
-        <div className="flex justify-between items-start mb-2">
+      <div className="p-5 flex flex-col flex-grow">
+        <div className="flex justify-between items-start mb-3">
           <Link 
             to={`/product/${product.id}`} 
             className="hover:text-teal-600 transition-colors flex-1 group/title"
@@ -238,7 +239,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <motion.button
             onClick={handleAddToCart}
             disabled={isAddingToCart || !product.inStock}
-            className="bg-teal-600 text-white p-2 rounded-full hover:bg-teal-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 shadow-md hover:shadow-lg"
+            className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-2.5 rounded-full hover:from-teal-700 hover:to-teal-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 shadow-md hover:shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Add to cart"

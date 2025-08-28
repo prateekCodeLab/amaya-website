@@ -148,6 +148,17 @@
     100% { background-position: 0% 50%; }
   }
 
+  @keyframes formSuccess {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
   /* Animation classes */
   .animate-fade-in {
     animation: fadeIn 0.6s var(--ease-out-quint) forwards;
@@ -181,6 +192,14 @@
     animation: gradientShift 4s ease infinite;
   }
 
+  .animate-slide-in {
+    animation: slideIn 0.5s ease-out forwards;
+  }
+
+  .animate-form-success {
+    animation: formSuccess 0.5s ease-out forwards;
+  }
+
   /* Glass morphism effect */
   .glass {
     background: rgba(255, 255, 255, 0.1);
@@ -191,6 +210,13 @@
   /* Text gradient */
   .text-gradient {
     background: linear-gradient(to right, theme('colors.teal.600'), theme('colors.coral.600'));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-teal {
+    background: linear-gradient(to right, theme('colors.teal.600'), theme('colors.teal.400'));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -217,6 +243,100 @@
   .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
   .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
   .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+
+  /* Enhanced line clamping */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+  
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+  
+  /* Tooltip styles */
+  [data-tooltip] {
+    position: relative;
+  }
+  
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: #334155;
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 100;
+    margin-bottom: 5px;
+  }
+
+  /* Enhanced gradient buttons */
+  .btn-gradient {
+    background: linear-gradient(to right, theme('colors.teal.600'), theme('colors.teal.500'));
+    transition: all 0.3s ease;
+  }
+  
+  .btn-gradient:hover {
+    background: linear-gradient(to right, theme('colors.teal.700'), theme('colors.teal.600'));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Enhanced card shadows */
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Enhanced focus states for accessibility */
+  .focus-ring:focus {
+    outline: 2px solid theme('colors.teal.500');
+    outline-offset: 2px;
+  }
+
+  /* Custom scrollbar for filter buttons */
+  .filter-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.teal.200') transparent;
+  }
+
+  .filter-scroll::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .filter-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .filter-scroll::-webkit-scrollbar-thumb {
+    background: theme('colors.teal.200');
+    border-radius: 2px;
+  }
+
+  .filter-scroll::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.teal.300');
+  }
 }
 
 @layer components {
@@ -326,6 +446,15 @@
     box-shadow: 0 0 0 3px rgba(42, 183, 202, 0.1);
   }
 
+  /* Enhanced form styles */
+  .form-input {
+    @apply w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors;
+  }
+
+  .form-input-error {
+    @apply border-red-500 focus:ring-red-500;
+  }
+
   /* Loading spinner with gradient */
   .spinner {
     animation: spin 1s linear infinite;
@@ -361,145 +490,50 @@
   .nav-link:hover::after {
     width: 100%;
   }
-}
 
-/* Add to the existing index.css file */
-@layer utilities {
-  /* Enhanced line clamping */
-  .line-clamp-1 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-  }
-  
-  .line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-  
-  /* Tooltip styles */
-  [data-tooltip] {
-    position: relative;
-  }
-  
-  [data-tooltip]:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 4px 8px;
-    background: #334155;
-    color: white;
-    font-size: 12px;
-    border-radius: 4px;
-    white-space: nowrap;
-    z-index: 100;
-    margin-bottom: 5px;
-  }
-  
-  /* Mobile-first responsive improvements */
-  @media (max-width: 640px) {
-    .product-grid {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
-    }
-    
-    .filter-buttons {
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    .filter-buttons::-webkit-scrollbar {
-      display: none;
-    }
-  }
-}
-
-/* Journal-specific styles */
-.journal-card {
-  transition: all 0.3s ease;
-}
-
-.journal-card:hover {
-  transform: translateY(-5px);
-}
-
-.category-badge {
-  transition: all 0.3s ease;
-}
-
-.category-badge:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.read-more-link {
-  position: relative;
-}
-
-.read-more-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -2px;
-  left: 0;
-  background-color: theme('colors.teal.600');
-  transition: width 0.3s ease;
-}
-
-.read-more-link:hover::after {
-  width: 100%;
-}
-
-/* Gradient backgrounds for featured section */
-.featured-gradient {
-  background: linear-gradient(135deg, theme('colors.teal.50') 0%, theme('colors.lime.50') 100%);
-}
-
-/* Load more button animation */
-.load-more-btn {
-  transition: all 0.3s ease;
-}
-
-.load-more-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-/* Add to the existing index.css file */
-@layer utilities {
-  /* Enhanced button hover effects */
-  .hover-lift {
-    transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint);
+  /* Journal-specific styles */
+  .journal-card {
+    transition: all 0.3s ease;
   }
 
-  .hover-lift:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  .journal-card:hover {
+    transform: translateY(-5px);
   }
 
-  /* Enhanced form styles */
-  .form-input {
-    @apply w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors;
-  }
-
-  .form-input-error {
-    @apply border-red-500 focus:ring-red-500;
-  }
-
-  /* Journal card enhancements */
   .journal-card-featured {
     @apply relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
 
   .journal-card-regular {
     @apply bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col h-full;
+  }
+
+  .category-badge {
+    transition: all 0.3s ease;
+  }
+
+  .category-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .read-more-link {
+    position: relative;
+  }
+
+  .read-more-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: theme('colors.teal.600');
+    transition: width 0.3s ease;
+  }
+
+  .read-more-link:hover::after {
+    width: 100%;
   }
 
   /* Category filter styles */
@@ -514,20 +548,37 @@
   .category-filter-inactive {
     @apply bg-white text-slate-700 hover:bg-teal-50 hover:text-teal-700;
   }
-}
 
-/* Animation for form success message */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  /* Load more button animation */
+  .load-more-btn {
+    transition: all 0.3s ease;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .load-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   }
 }
 
-.animate-slide-in {
-  animation: slideIn 0.5s ease-out forwards;
+/* Gradient backgrounds for featured section */
+.featured-gradient {
+  background: linear-gradient(135deg, theme('colors.teal.50') 0%, theme('colors.lime.50') 100%);
+}
+
+/* Mobile-first responsive improvements */
+@media (max-width: 640px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  
+  .filter-buttons {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .filter-buttons::-webkit-scrollbar {
+    display: none;
+  }
 }

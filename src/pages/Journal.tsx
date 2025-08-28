@@ -1,16 +1,19 @@
-// Updated src/pages/Journal.tsx
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ARTICLES, PLACEHOLDERS, FEATURED_ARTICLE } from '../utils/constants';
 import ImageWithFallback from '../components/ImageWithFallback';
-import { FiCalendar, FiClock, FiArrowRight } from 'react-icons/fi';
+import NewsletterSection from '../components/NewsletterSection';
+import { FiCalendar, FiClock, FiArrowRight, FiBookmark } from 'react-icons/fi';
+import { useState } from 'react';
 
 export default function Journal() {
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, articleId: number) => {
-    const target = e.target as HTMLImageElement;
-    console.warn(`Article image failed to load for article ${articleId}`);
-    target.src = PLACEHOLDERS.article;
-  };
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  
+  const categories = ['All', 'Skincare Wisdom', 'Ingredient Spotlight', 'Craft Techniques', 'Artisan Stories', 'Self-Care Rituals'];
+  
+  const filteredArticles = selectedCategory === 'All' 
+    ? ARTICLES 
+    : ARTICLES.filter(article => article.category === selectedCategory);
 
   return (
     <>
@@ -40,13 +43,17 @@ export default function Journal() {
       {/* Featured Article Section */}
       <div className="bg-white py-16">
         <div className="container mx-auto px-4">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-800 mb-8 text-center">
-            Featured Story
-          </h2>
-          
-          <div className="bg-gradient-to-r from-teal-50 to-lime-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-16">
+          <div className="bg-gradient-to-r from-teal-50 to-lime-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 mb-16 relative">
+            {/* Editor's Pick Badge */}
+            <div className="absolute top-6 left-6 z-10">
+              <span className="inline-flex items-center px-3 py-1 bg-teal-600 text-white rounded-full text-sm font-medium">
+                <FiBookmark className="h-4 w-4 mr-1" />
+                Editor's Pick
+              </span>
+            </div>
+            
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              <div className="h-64 lg:h-96 overflow-hidden">
+              <div className="h-64 lg:h-96 overflow-hidden relative">
                 <ImageWithFallback
                   src={FEATURED_ARTICLE.image}
                   alt={FEATURED_ARTICLE.title}
@@ -55,6 +62,7 @@ export default function Journal() {
                   width={600}
                   height={400}
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 to-transparent"></div>
               </div>
               
               <div className="p-8">
@@ -85,7 +93,7 @@ export default function Journal() {
                 
                 <Link 
                   to={`/journal/${FEATURED_ARTICLE.id}`} 
-                  className="inline-flex items-center bg-teal-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-teal-700 transition-colors duration-300 group"
+                  className="inline-flex items-center bg-gradient-to-r from-teal-600 to-teal-700 text-white px-6 py-3 rounded-lg font-medium hover:from-teal-700 hover:to-teal-800 transition-all duration-300 group shadow-md hover:shadow-lg"
                 >
                   Read Featured Article
                   <FiArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -96,17 +104,43 @@ export default function Journal() {
         </div>
       </div>
 
+      {/* Category Filter */}
+      <div className="bg-slate-50 py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap justify-center gap-3">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full font-medium transition-all duration-300 ${
+                  selectedCategory === category
+                    ? 'bg-teal-600 text-white shadow-md'
+                    : 'bg-white text-slate-700 hover:bg-teal-50 hover:text-teal-700'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Main Articles Grid */}
       <div className="bg-slate-50 py-16">
         <div className="container mx-auto px-4">
           <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-800 mb-8 text-center">
-            Latest Stories
+            {selectedCategory === 'All' ? 'Latest Stories' : selectedCategory}
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {ARTICLES.map(article => (
-              <article key={article.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col h-full">
-                <div className="h-48 overflow-hidden">
+            {filteredArticles.map((article, index) => (
+              <article 
+                key={article.id} 
+                className={`bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col h-full ${
+                  index < 2 ? 'md:col-span-1' : ''
+                }`}
+              >
+                <div className="h-48 overflow-hidden relative">
                   <ImageWithFallback
                     src={article.image}
                     alt={article.title}
@@ -115,15 +149,14 @@ export default function Journal() {
                     width={400}
                     height={200}
                   />
-                </div>
-                
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="mb-3">
-                    <span className="inline-flex items-center px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-medium">
+                  <div className="absolute top-4 left-4">
+                    <span className="inline-flex items-center px-3 py-1 bg-white/90 backdrop-blur-sm text-teal-800 rounded-full text-xs font-medium">
                       {article.category}
                     </span>
                   </div>
-                  
+                </div>
+                
+                <div className="p-6 flex flex-col flex-grow">
                   <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center text-slate-500">
                       <FiCalendar className="h-3 w-3 mr-1" />
@@ -152,10 +185,23 @@ export default function Journal() {
           
           {/* Load More Button */}
           <div className="text-center mt-12">
-            <button className="bg-white text-teal-600 border border-teal-600 px-8 py-3 rounded-lg font-medium hover:bg-teal-600 hover:text-white transition-all duration-300">
+            <button className="bg-white text-teal-600 border border-teal-600 px-8 py-3 rounded-lg font-medium hover:bg-teal-600 hover:text-white transition-all duration-300 hover-lift">
               Load More Articles
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Newsletter CTA */}
+      <div className="bg-gradient-to-r from-teal-50 to-lime-50 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="font-serif text-3xl font-bold text-slate-800 mb-4">
+            Subscribe for Skincare Insights
+          </h2>
+          <p className="font-sans text-slate-600 mb-8 max-w-2xl mx-auto">
+            Get exclusive articles, skincare tips, and special offers delivered straight to your inbox.
+          </p>
+          <NewsletterSection />
         </div>
       </div>
     </>

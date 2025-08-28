@@ -471,3 +471,63 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
+
+/* Add to the existing index.css file */
+@layer utilities {
+  /* Enhanced button hover effects */
+  .hover-lift {
+    transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Enhanced form styles */
+  .form-input {
+    @apply w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors;
+  }
+
+  .form-input-error {
+    @apply border-red-500 focus:ring-red-500;
+  }
+
+  /* Journal card enhancements */
+  .journal-card-featured {
+    @apply relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+
+  .journal-card-regular {
+    @apply bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col h-full;
+  }
+
+  /* Category filter styles */
+  .category-filter {
+    @apply px-4 py-2 rounded-full font-medium transition-all duration-300;
+  }
+
+  .category-filter-active {
+    @apply bg-teal-600 text-white shadow-md;
+  }
+
+  .category-filter-inactive {
+    @apply bg-white text-slate-700 hover:bg-teal-50 hover:text-teal-700;
+  }
+}
+
+/* Animation for form success message */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}

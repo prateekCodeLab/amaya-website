@@ -1,9 +1,10 @@
-// Updated Footer.tsx
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import NewsletterForm from './NewsletterForm';
 import { FiInstagram, FiFacebook, FiTwitter, FiHeart } from 'react-icons/fi';
 
 export default function Footer() {
+  const location = useLocation();
+  
   const links = [
     { name: 'Shipping Policy', path: '/policies#shipping' },
     { name: 'Returns Policy', path: '/policies#returns' },
@@ -16,6 +17,44 @@ export default function Footer() {
     { name: 'Facebook', icon: <FiFacebook className="h-5 w-5" />, url: 'https://facebook.com' },
     { name: 'Pinterest', icon: <FiHeart className="h-5 w-5" />, url: 'https://pinterest.com' }
   ];
+
+  // Context-specific footer content
+  const getContextContent = () => {
+    if (location.pathname === '/contact') {
+      return (
+        <div className="mt-6 pt-6 border-t border-slate-700">
+          <h4 className="font-serif text-lg font-bold text-teal-400 mb-3">Contact FAQ</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <p className="font-sans text-slate-300 font-medium">Response Time</p>
+              <p className="font-sans text-slate-400">We typically respond within 24 hours on business days</p>
+            </div>
+            <div>
+              <p className="font-sans text-slate-300 font-medium">Business Hours</p>
+              <p className="font-sans text-slate-400">Monday-Friday: 9AM-5PM EST</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
+    if (location.pathname === '/journal') {
+      return (
+        <div className="mt-6 pt-6 border-t border-slate-700">
+          <h4 className="font-serif text-lg font-bold text-teal-400 mb-3">Popular Journal Topics</h4>
+          <div className="flex flex-wrap gap-2">
+            {['Skincare Tips', 'Ingredients', 'Sustainability', 'Self-Care'].map(topic => (
+              <span key={topic} className="px-3 py-1 bg-slate-700 text-slate-300 rounded-full text-sm">
+                {topic}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    
+    return null;
+  };
 
   return (
     <footer className="bg-slate-900 text-white py-12 md:py-16">
@@ -73,7 +112,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-slate-700 mt-12 pt-8 text-center">
+        {/* Context-specific content */}
+        {getContextContent()}
+
+        <div className="border-t border-slate-700 mt-8 pt-8 text-center">
           <p className="font-sans text-slate-400 text-base">
             © {new Date().getFullYear()} Amaya Luxury Soaps. All rights reserved.
           </p>

@@ -241,5 +241,5 @@ See [package.json](package.json) for full details.
 This project is for demonstration and educational purposes.  
 For commercial use, please replace all demo content and review third-party licenses.
 
-Made with ❤️ by the prateekCodeLab
+Made with ❤️ by the PRATEEK KUMAR (prateekCodeLab)
 
